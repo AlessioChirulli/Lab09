@@ -26,6 +26,7 @@ public class Model {
 	private Graph<Country,DefaultEdge>grafo;	
 	private Map<Integer,Country>idMap;
 	private Map<Country,Country> predecessore;
+	private List<Country> visitate;
 	
 	public Model() {
 		dao=new BordersDAO();
@@ -139,6 +140,40 @@ public class Model {
 		}
 		
 		return result;
+	}
+	
+	public List<Country> fermateRaggiungibiliRicorsivo(Country partenza){
+		visitate=new ArrayList<Country>();
+		List<Country>daVisitare=new ArrayList<Country>();
+		daVisitare.add(partenza);
+		cerca(daVisitare,0);
+		return visitate;
+	}
+	private void cerca( List<Country> daVisitare, int L) {
+		
+		//caso terminale
+		if(daVisitare.size()==visitate.size()) {
+			return ;
+		}
+		
+		//altrimenti
+		Country c=daVisitare.get(L);
+		Set<DefaultEdge>archi=this.grafo.edgesOf(c);
+		
+		for (DefaultEdge a: archi) {
+			if((!visitate.contains(this.grafo.getEdgeSource(a)) && !daVisitare.contains(this.grafo.getEdgeSource(a)) && !c.equals(this.grafo.getEdgeSource(a)))){
+				daVisitare.add(this.grafo.getEdgeSource(a));
+			}
+			if((!visitate.contains(this.grafo.getEdgeTarget(a)) && !daVisitare.contains(this.grafo.getEdgeTarget(a)) && !c.equals(this.grafo.getEdgeTarget(a)))){
+				daVisitare.add(this.grafo.getEdgeTarget(a));
+			}
+		}
+		
+		if(!visitate.contains(c)) {
+			visitate.add(c);
+		}
+		
+		cerca(daVisitare,L+1);
 	}
 
 }

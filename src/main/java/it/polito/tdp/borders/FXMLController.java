@@ -65,7 +65,7 @@ public class FXMLController {
     @FXML
     void doStatiRaggiungibili(ActionEvent event) {
     	txtResult.clear();
-    	List<Country> result=model.fermateRaggiungibili(boxStati.getValue());
+    	List<Country> result=model.fermateRaggiungibiliRicorsivo(boxStati.getValue());
     	txtResult.appendText("#Fermate ragiungibili da "+boxStati.getValue()+": "+result.size()+"\n");
     	txtResult.appendText("Fermate raggiungibili da: "+boxStati.getValue()+"\n");
     	for(Country c:result) {
